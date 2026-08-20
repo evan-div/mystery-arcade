@@ -1,11 +1,10 @@
 # Assets
 
-Drop the two invitation images here:
-
 | Filename | What it is |
 | --- | --- |
 | `hero-arcade.png` | The dark arcade row photo (16:9). This is the landing background. |
 | `insert-coin.png` | The red "25¢ INSERT COIN TO PLAY" marquee, transparent background. |
+| `hero-theme.mp3` | Music that loops on the attract screen only, muting/pausing once you leave it. |
 
 **Until these exist the site still works** — it renders a CSS-drawn arcade and a
 CSS-drawn marquee instead. Nothing breaks, it just looks stylized rather than photoreal.

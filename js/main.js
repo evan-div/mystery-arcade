@@ -208,7 +208,11 @@
     }
 
     paint(Sound.isEnabled());
-    btn.addEventListener('click', () => paint(Sound.toggle()));
+    btn.addEventListener('click', () => {
+      const on = Sound.toggle();
+      paint(on);
+      Music.onSoundToggle(on);
+    });
   }
 
   /* ══════════════════════════════════════════════════ 7. Wiring ═══ */
@@ -276,6 +280,7 @@
     });
 
     MenuNav.init($('#menuList'));
+    Music.init($('#heroMusic'));
     initSoundToggle();
     initNav();
 
@@ -300,6 +305,7 @@
     Screens.onChange((now, prev) => {
       if (now === 'snake') SnakeGame.enter();
       else if (prev === 'snake') SnakeGame.leave();
+      Music.onScreenChange(now);
     });
 
     // Open on whatever the URL asked for, without pushing a duplicate entry.

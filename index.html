@@ -57,6 +57,10 @@
 
   <p class="attract__hint"><span id="attractHint">▸ INSERT COIN</span></p>
   <button class="attract__skip" id="skipIntro">SKIP INTRO →</button>
+
+  <!-- Hero-screen music loop. Plays only while this screen is showing;
+       js/music.js handles autoplay's user-gesture requirement. -->
+  <audio id="heroMusic" src="assets/hero-theme.mp3" loop preload="auto" playsinline></audio>
 </section>
 
 <!-- ═════════════════════════════════════════════════════════════ BOOT ═══ -->
@@ -238,6 +242,7 @@
 <script src="js/config.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/screens.js"></script>
+<script src="js/music.js"></script>
 <script src="js/loader.js"></script>
 <script src="js/snake.js"></script>
 <script src="js/main.js"></script>

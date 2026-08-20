@@ -1,17 +1,19 @@
 /* =============================================================================
-   8-bit sound, synthesized with the Web Audio API.
-   No audio files ship with this site — every effect is oscillators + gain.
-   Muted by default; the choice persists in localStorage.
+   8-bit sound, synthesized with the Web Audio API, plus control of the hero
+   music loop (js/music.js). Sound defaults ON; the choice persists in
+   localStorage once someone actually changes it.
    ========================================================================== */
 
 const Sound = (() => {
   const STORAGE_KEY = 'ite-arcade-sound';
   let ctx = null;
-  let enabled = false;
+  let enabled = true;
 
   try {
-    enabled = localStorage.getItem(STORAGE_KEY) === 'on';
-  } catch (_) { /* private browsing — stay muted */ }
+    // Only an explicit "off" overrides the default — a first-time visitor
+    // (nothing stored yet) starts with sound on.
+    if (localStorage.getItem(STORAGE_KEY) === 'off') enabled = false;
+  } catch (_) { /* private browsing — default stands for the session */ }
 
   /* An AudioContext can only start from a user gesture, so we create it
      lazily on the first click rather than at page load. */
