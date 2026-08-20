@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ITE Party — Insert Coin</title>
+<meta name="description" content="You're invited. Friday, September 25, 2026 — The Green Pig Pub rooftop, then Quarters Arcade Bar.">
+<meta name="theme-color" content="#05060a">
+
+<meta property="og:title" content="ITE PARTY — INSERT COIN">
+<meta property="og:description" content="Friday, September 25, 2026 · Green Pig Pub rooftop at 7:00 · Quarters Arcade Bar at 9:00">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕹️</text></svg>">
+</head>
+
+<body class="screen-attract is-loading">
+
+<a class="skip-link" href="#menu-heading">Skip to party details</a>
+
+<!-- ══════════════════════════════════════════════════════════ ATTRACT ═══ -->
+<section id="screen-attract" class="screen screen--attract" aria-label="Welcome">
+  <div class="stage" id="stage">
+    <img class="stage__photo" id="heroPhoto" src="assets/hero-arcade.png" alt="" aria-hidden="true">
+
+    <!-- CSS-drawn arcade, shown only when the photo is missing -->
+    <div class="fauxcade" aria-hidden="true">
+      <div class="fauxcade__floor"></div>
+      <div class="fauxcade__cab fauxcade__cab--left"></div>
+      <div class="fauxcade__cab fauxcade__cab--mid"></div>
+      <div class="fauxcade__cab fauxcade__cab--right"></div>
+    </div>
+
+    <!-- The pulsing coin slot. Positioned from CONFIG.COIN_SLOT. -->
+    <div class="coin" id="coinAnchor">
+      <span class="coin__bleed" aria-hidden="true"></span>
+      <span class="coin__halo" aria-hidden="true"></span>
+      <button class="coin__btn" id="coinBtn" aria-label="Insert coin to enter">
+        <span class="coin__slot" aria-hidden="true"></span>
+      </button>
+      <img class="coin__marquee" id="coinMarquee" src="assets/insert-coin.png"
+           alt="" aria-hidden="true">
+      <span class="coin__marquee-fallback" aria-hidden="true">
+        <b>25¢</b><em>INSERT COIN<br>TO PLAY</em>
+      </span>
+    </div>
+  </div>
+
+  <header class="attract__title">
+    <h1><span class="glitch" data-text="ITE PARTY">ITE PARTY</span></h1>
+    <p class="attract__date">FRI 9.25.26</p>
+  </header>
+
+  <p class="attract__hint"><span id="attractHint">▸ INSERT COIN</span></p>
+  <button class="attract__skip" id="skipIntro">SKIP INTRO →</button>
+
+  <!-- Background music loop, plays across every screen (display:none on this
+       section doesn't stop playback — the element just keeps running).
+       js/music.js handles autoplay's user-gesture requirement. -->
+  <audio id="heroMusic" src="assets/hero-theme.mp3" loop preload="auto" playsinline></audio>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════ BOOT ═══ -->
+<section id="screen-boot" class="screen screen--boot" aria-label="Loading">
+  <div class="monitor">
+    <div class="monitor__inner">
+      <pre class="boot__log" id="bootLog" aria-hidden="true"></pre>
+      <div class="boot__bar">
+        <div class="boot__blocks" id="bootBlocks"></div>
+        <div class="boot__pct"><span id="bootPct">0</span>%</div>
+      </div>
+      <p class="boot__status" id="bootStatus" role="status" aria-live="polite">Loading 0%</p>
+      <p class="boot__skip">press any key to skip</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════ MENU ═══ -->
+<section id="screen-menu" class="screen screen--menu" aria-label="Main menu">
+  <div class="monitor">
+    <div class="monitor__inner">
+      <h2 class="menu__title" id="menu-heading" tabindex="-1">
+        <span class="glitch" data-text="ITE PARTY">ITE PARTY</span>
+      </h2>
+      <p class="menu__sub">FRI 9.25.26 · SELECT AN OPTION</p>
+
+      <nav class="menu__list" id="menuList">
+        <button class="menu__item" data-goto="location">
+          <span class="menu__cursor" aria-hidden="true">▶</span>
+          <span class="menu__label">LOCATION</span>
+        </button>
+        <button class="menu__item" data-goto="details">
+          <span class="menu__cursor" aria-hidden="true">▶</span>
+          <span class="menu__label">DETAILS</span>
+        </button>
+        <button class="menu__item" data-goto="rsvp">
+          <span class="menu__cursor" aria-hidden="true">▶</span>
+          <span class="menu__label">RSVP</span>
+        </button>
+      </nav>
+
+      <button class="menu__secret" id="secretBtn" aria-label="Play a hidden mini-game">
+        <span aria-hidden="true">?? ?????</span>
+      </button>
+      <p class="menu__coin">INSERT COIN — 1 CREDIT</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════ LOCATION ═══ -->
+<section id="screen-location" class="screen screen--page" aria-label="Location">
+  <div class="monitor monitor--page">
+    <div class="monitor__inner">
+      <h2 class="page__title" tabindex="-1">LOCATION</h2>
+      <div class="venues" id="venueList"></div>
+      <p class="page__foot">🚗 Lyfts and Ubers will be reimbursed — save your receipt.</p>
+      <button class="btn-back" data-goto="menu">◀ BACK TO MENU</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ DETAILS ═══ -->
+<section id="screen-details" class="screen screen--page" aria-label="Details">
+  <div class="monitor monitor--page">
+    <div class="monitor__inner">
+      <h2 class="page__title" tabindex="-1">DETAILS</h2>
+
+      <h3 class="page__sub">▸ TIMELINE</h3>
+      <ol class="timeline" id="timelineList"></ol>
+
+      <h3 class="page__sub">▸ POWER-UPS</h3>
+      <ul class="perks" id="perkList"></ul>
+
+      <div class="page__cta">
+        <button class="btn btn--amber" id="icsBtn">＋ ADD TO CALENDAR</button>
+      </div>
+      <button class="btn-back" data-goto="menu">◀ BACK TO MENU</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════ RSVP ═══ -->
+<section id="screen-rsvp" class="screen screen--page" aria-label="RSVP">
+  <div class="monitor monitor--page">
+    <div class="monitor__inner">
+      <h2 class="page__title" tabindex="-1">RSVP</h2>
+      <p class="rsvp__lead">
+        No form, no fuss — just send a note so we get the headcount right.<br>
+        <strong>Let us know if you're bringing your +1.</strong>
+      </p>
+
+      <div class="rsvp__box">
+        <a class="btn btn--big btn--green" id="rsvpMail" href="#">✉ EMAIL YOUR RSVP</a>
+        <p class="rsvp__or">— or copy the address —</p>
+        <button class="rsvp__copy" id="rsvpCopy">
+          <code id="rsvpAddr">…</code>
+          <span class="rsvp__copy-hint" id="rsvpCopyHint">COPY</span>
+        </button>
+      </div>
+
+      <p class="page__foot">Every employee gets a +1. Food, drinks and rides are on ITE.</p>
+      <button class="btn-back" data-goto="menu">◀ BACK TO MENU</button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ SNAKE ═══ -->
+<section id="screen-snake" class="screen screen--snake" aria-label="Quarter Snake mini-game">
+  <div class="monitor monitor--game">
+    <div class="monitor__inner">
+      <div class="snake__hud">
+        <span>QUARTERS <b id="snakeScore">0</b></span>
+        <span>BEST <b id="snakeBest">0</b></span>
+      </div>
+
+      <div class="snake__wrap">
+        <canvas id="snakeCanvas" width="420" height="420"
+                aria-label="Snake game board"></canvas>
+        <div class="snake__overlay" id="snakeOverlay">
+          <p class="snake__big" id="snakeBig">QUARTER SNAKE</p>
+          <p class="snake__msg" id="snakeMsg">Collect the quarters. Don't hit the walls.</p>
+          <button class="btn btn--cyan" id="snakeStart">START</button>
+        </div>
+      </div>
+
+      <div class="dpad" id="dpad" aria-label="Game controls">
+        <button class="dpad__btn dpad__up"    data-dir="up"    aria-label="Up">▲</button>
+        <button class="dpad__btn dpad__left"  data-dir="left"  aria-label="Left">◀</button>
+        <button class="dpad__btn dpad__right" data-dir="right" aria-label="Right">▶</button>
+        <button class="dpad__btn dpad__down"  data-dir="down"  aria-label="Down">▼</button>
+      </div>
+
+      <button class="btn-back" data-goto="menu">◀ BACK TO MENU</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ CHROME ═══ -->
+<button class="sound-toggle" id="soundToggle" aria-pressed="false"
+        aria-label="Turn sound on">
+  <span class="sound-toggle__icon" aria-hidden="true">🔇</span>
+  <span class="sound-toggle__txt">SOUND OFF</span>
+</button>
+
+<div class="crt" aria-hidden="true">
+  <div class="crt__scan"></div>
+  <div class="crt__vignette"></div>
+  <div class="crt__flicker"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ NOSCRIPT ═══ -->
+<noscript>
+  <div class="plain">
+    <h1>ITE Party</h1>
+    <p class="plain__date">Friday, September 25, 2026</p>
+    <p><strong>It's a half day</strong> — office hours 9:00 AM – 1:00 PM.</p>
+    <h2>The Green Pig Pub — Rooftop Patio</h2>
+    <p><strong>Arrive 7:00 PM</strong><br>31 E 400 S, Salt Lake City, UT 84111</p>
+    <ul>
+      <li>The rooftop is private to us until 8:30 PM. After that it opens to the
+          public, but we can still stay up there.</li>
+      <li>Food and drinks are covered by ITE.</li>
+      <li>Each employee gets a +1.</li>
+    </ul>
+    <h2>Quarters Arcade Bar</h2>
+    <p><strong>Walk over 8:30 – 9:00 PM</strong><br>5 E 400 S, Salt Lake City, UT 84111</p>
+    <ul>
+      <li>Each employee gets two rolls of quarters to play with.</li>
+      <li>Drinks are covered until 10:30 PM.</li>
+    </ul>
+    <h2>Getting home</h2>
+    <p>Lyfts and Ubers will be reimbursed.</p>
+    <h2>RSVP</h2>
+    <p>Email <a href="mailto:kg@intheevent.com">kg@intheevent.com</a>
+       and let us know if you're bringing a +1.</p>
+  </div>
+</noscript>
+
+<script src="js/config.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/screens.js"></script>
+<script src="js/music.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/snake.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
