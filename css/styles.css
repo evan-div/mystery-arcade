@@ -223,7 +223,9 @@ body.no-photo .fauxcade { display: block; }
   border-radius: 8px;
 }
 
-/* the lit slot itself */
+/* the lit slot itself — only visible as a fallback when the marquee art
+   is missing; once the marquee sits on top of the slot it carries its
+   own glow, so this pill is hidden rather than double-lit underneath it. */
 .coin__slot {
   display: block;
   width:  clamp(11px, 1.05vw, 18px);
@@ -236,6 +238,7 @@ body.no-photo .fauxcade { display: block; }
     inset 0 0 6px rgba(255,255,255,.55);
   animation: slotPulse 1.6s ease-in-out infinite;
 }
+body:not(.no-marquee) .coin__slot { opacity: 0; }
 @keyframes slotPulse {
   0%,100% { filter: brightness(1);    box-shadow: 0 0 10px 2px rgba(255,80,40,.9),
                                                   0 0 26px 8px rgba(255,45,26,.55),
@@ -271,47 +274,42 @@ body.no-photo .fauxcade { display: block; }
 .coin__btn:hover .coin__slot { filter: brightness(1.8); }
 .coin__btn:active { transform: translateY(1px); }
 
-/* the 25¢ marquee, tucked right up against the slot */
+/* the 25¢ marquee — locked directly over the coin slot, flickering like a
+   lit sign rather than floating beside it. */
 .coin__marquee {
-  position: absolute; left: 108%; top: 50%;
-  transform: translateY(-50%);
-  width: clamp(38px, 3.6vw, 68px);
-  filter: drop-shadow(0 0 14px rgba(255,45,26,.65));
-  animation: bob 2.6s ease-in-out infinite;
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(34px, 3.4vw, 62px);
+  animation: marqueeFlicker 2.6s linear infinite;
   pointer-events: none;
 }
-@keyframes bob { 0%,100%{transform:translateY(-50%)} 50%{transform:translateY(-56%)} }
+@keyframes marqueeFlicker {
+  0%, 89%, 100% { opacity: 1;   filter: drop-shadow(0 0 10px rgba(255,45,26,.85)) brightness(1); }
+  91%           { opacity: .35; filter: drop-shadow(0 0 3px rgba(255,45,26,.4))  brightness(.7); }
+  93%           { opacity: 1;   filter: drop-shadow(0 0 16px rgba(255,90,40,1))  brightness(1.35); }
+  95%           { opacity: .55; filter: drop-shadow(0 0 5px rgba(255,45,26,.5))  brightness(.8); }
+  97%           { opacity: 1;   filter: drop-shadow(0 0 12px rgba(255,45,26,.9)) brightness(1.1); }
+}
 
 body.no-marquee .coin__marquee { display: none; }
 
 .coin__marquee-fallback {
   display: none;
-  position: absolute; left: 108%; top: 50%;
-  transform: translateY(-50%);
-  width: max-content; padding: 6px 8px;
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content; padding: 5px 7px;
   background: #0a0a0a;
   border: 2px solid var(--red);
   border-radius: 4px;
-  box-shadow: 0 0 16px rgba(255,45,26,.7), inset 0 0 10px rgba(255,45,26,.25);
   text-align: center; color: var(--amber);
   font-family: var(--font-px);
-  animation: bob 2.6s ease-in-out infinite;
+  animation: marqueeFlicker 2.6s linear infinite;
   pointer-events: none;
 }
-.coin__marquee-fallback b  { display: block; font-size: clamp(9px,1vw,15px); }
-.coin__marquee-fallback em { display: block; margin-top: 4px; font-style: normal;
-                             font-size: clamp(4.5px,.5vw,7px); line-height: 1.6; }
+.coin__marquee-fallback b  { display: block; font-size: clamp(8px,.9vw,13px); }
+.coin__marquee-fallback em { display: block; margin-top: 3px; font-style: normal;
+                             font-size: clamp(4px,.46vw,6px); line-height: 1.5; }
 body.no-marquee .coin__marquee-fallback { display: block; }
-
-/* On narrow screens the marquee would run off-frame — put it underneath. */
-@media (max-width: 700px) {
-  .coin__marquee, .coin__marquee-fallback {
-    left: 50%; top: 130%; transform: translateX(-50%);
-    animation-name: bobX;
-  }
-  @keyframes bobX { 0%,100%{transform:translate(-50%,0)} 50%{transform:translate(-50%,-6px)} }
-  .coin__marquee { width: 48px; }
-}
 
 /* ── Attract chrome ───────────────────────────────────────────────────── */
 
