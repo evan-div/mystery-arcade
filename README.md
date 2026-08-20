@@ -19,7 +19,7 @@ Drop these into `assets/`:
 
 | Filename | What it is |
 | --- | --- |
-| `hero-arcade.jpg` | The dark arcade row photo — must be **16:9** |
+| `hero-arcade.png` | The dark arcade row photo — must be **16:9** |
 | `insert-coin.png` | The red "25¢ INSERT COIN TO PLAY" marquee, transparent background |
 
 **The site works without them.** If either is missing it renders a CSS-drawn stand-in

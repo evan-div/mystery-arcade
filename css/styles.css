@@ -271,46 +271,46 @@ body.no-photo .fauxcade { display: block; }
 .coin__btn:hover .coin__slot { filter: brightness(1.8); }
 .coin__btn:active { transform: translateY(1px); }
 
-/* the 25¢ marquee, sitting beside the slot */
+/* the 25¢ marquee, tucked right up against the slot */
 .coin__marquee {
-  position: absolute; left: 130%; top: 50%;
+  position: absolute; left: 108%; top: 50%;
   transform: translateY(-50%);
-  width: clamp(74px, 8vw, 140px);
-  filter: drop-shadow(0 0 16px rgba(255,45,26,.65));
+  width: clamp(38px, 3.6vw, 68px);
+  filter: drop-shadow(0 0 14px rgba(255,45,26,.65));
   animation: bob 2.6s ease-in-out infinite;
   pointer-events: none;
 }
-@keyframes bob { 0%,100%{transform:translateY(-50%)} 50%{transform:translateY(-58%)} }
+@keyframes bob { 0%,100%{transform:translateY(-50%)} 50%{transform:translateY(-56%)} }
 
 body.no-marquee .coin__marquee { display: none; }
 
 .coin__marquee-fallback {
   display: none;
-  position: absolute; left: 130%; top: 50%;
+  position: absolute; left: 108%; top: 50%;
   transform: translateY(-50%);
-  width: max-content; padding: 10px 12px;
+  width: max-content; padding: 6px 8px;
   background: #0a0a0a;
-  border: 3px solid var(--red);
-  border-radius: 6px;
-  box-shadow: 0 0 22px rgba(255,45,26,.7), inset 0 0 14px rgba(255,45,26,.25);
+  border: 2px solid var(--red);
+  border-radius: 4px;
+  box-shadow: 0 0 16px rgba(255,45,26,.7), inset 0 0 10px rgba(255,45,26,.25);
   text-align: center; color: var(--amber);
   font-family: var(--font-px);
   animation: bob 2.6s ease-in-out infinite;
   pointer-events: none;
 }
-.coin__marquee-fallback b  { display: block; font-size: clamp(13px,1.5vw,22px); }
-.coin__marquee-fallback em { display: block; margin-top: 6px; font-style: normal;
-                             font-size: clamp(6px,.66vw,9px); line-height: 1.7; }
+.coin__marquee-fallback b  { display: block; font-size: clamp(9px,1vw,15px); }
+.coin__marquee-fallback em { display: block; margin-top: 4px; font-style: normal;
+                             font-size: clamp(4.5px,.5vw,7px); line-height: 1.6; }
 body.no-marquee .coin__marquee-fallback { display: block; }
 
 /* On narrow screens the marquee would run off-frame — put it underneath. */
 @media (max-width: 700px) {
   .coin__marquee, .coin__marquee-fallback {
-    left: 50%; top: 150%; transform: translateX(-50%);
+    left: 50%; top: 130%; transform: translateX(-50%);
     animation-name: bobX;
   }
-  @keyframes bobX { 0%,100%{transform:translate(-50%,0)} 50%{transform:translate(-50%,-7px)} }
-  .coin__marquee { width: 86px; }
+  @keyframes bobX { 0%,100%{transform:translate(-50%,0)} 50%{transform:translate(-50%,-6px)} }
+  .coin__marquee { width: 48px; }
 }
 
 /* ── Attract chrome ───────────────────────────────────────────────────── */

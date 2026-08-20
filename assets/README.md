@@ -4,7 +4,7 @@ Drop the two invitation images here:
 
 | Filename | What it is |
 | --- | --- |
-| `hero-arcade.jpg` | The dark arcade row photo (16:9). This is the landing background. |
+| `hero-arcade.png` | The dark arcade row photo (16:9). This is the landing background. |
 | `insert-coin.png` | The red "25¢ INSERT COIN TO PLAY" marquee, transparent background. |
 
 **Until these exist the site still works** — it renders a CSS-drawn arcade and a
