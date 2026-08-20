@@ -9,7 +9,7 @@ const CONFIG = {
 
   /* --- Who RSVPs go to ---------------------------------------------------- */
   // Swap this for a work address any time. Nothing else needs to change.
-  RSVP_EMAIL: 'evanccordova@gmail.com',
+  RSVP_EMAIL: 'kg@intheevent.com',
   RSVP_SUBJECT: 'RSVP — ITE Party, Sept 25',
   RSVP_BODY: [
     'Count me in!',

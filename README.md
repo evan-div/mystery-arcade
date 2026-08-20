@@ -45,7 +45,7 @@ close. Reload after each tweak — it's the only tuning this site needs.
 address — all of it. You should never need to touch the HTML to change a detail.
 
 ```js
-RSVP_EMAIL: 'evanccordova@gmail.com',   // swap for a work address any time
+RSVP_EMAIL: 'kg@intheevent.com',   // swap for a work address any time
 ```
 
 ---
