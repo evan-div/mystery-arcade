@@ -74,7 +74,7 @@ const CONFIG = {
     { time: '7:00 PM',  label: 'ARRIVE',        detail: 'Green Pig Pub rooftop patio' },
     { time: '8:30 PM',  label: 'ROOFTOP OPENS', detail: 'Patio goes public — we can stay' },
     { time: '9:00 PM',  label: 'WALK OVER',     detail: 'Head to Quarters Arcade Bar' },
-    { time: '10:30 PM', label: 'LAST CALL',     detail: 'Covered drinks end at Quarters' },
+    { time: '10:30 PM', label: 'LAST CALL',     detail: 'ITE Tab closes at Quarters' },
   ],
 
   /* --- Perks (rendered as "power-ups") ------------------------------------ */
