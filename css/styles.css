@@ -118,10 +118,17 @@ body.is-loading .screen { display: none !important; }
   content: attr(data-text);
   position: absolute; inset: 0;
   pointer-events: none;
+  /* Outline only, not a solid fill: at a 2px offset a filled duplicate
+     covers almost the whole glyph and washes out the base color underneath
+     it (screen blend made this worse, brightening the overlap to near-white).
+     A transparent-fill stroke only tints the edges, so the base green stays
+     the dominant color the eye reads. */
+  color: transparent;
+  -webkit-text-stroke: 1.4px currentColor;
 }
-.glitch::before { color: #AAB947;        transform: translate(-2px, 0); opacity: .38;
+.glitch::before { -webkit-text-stroke-color: var(--cyan);    transform: translate(-2px, 0); opacity: .7;
                   animation: shiftA 4.2s steps(2,end) infinite; }
-.glitch::after  { color: var(--magenta); transform: translate( 2px, 0); opacity: .38;
+.glitch::after  { -webkit-text-stroke-color: var(--magenta); transform: translate( 2px, 0); opacity: .65;
                   animation: shiftB 3.6s steps(2,end) infinite; }
 @keyframes shiftA { 0%,92%,100%{transform:translate(-2px,0)} 94%{transform:translate(-5px,1px)} }
 @keyframes shiftB { 0%,90%,100%{transform:translate( 2px,0)} 93%{transform:translate( 5px,-1px)} }
@@ -331,8 +338,8 @@ body.no-marquee .coin__marquee-fallback { display: block; }
   font-family: var(--font-px);
   font-size: clamp(21px, 5.2vw, 62px);
   letter-spacing: .06em;
-  color: #fff;
-  text-shadow: 0 0 18px rgba(255,255,255,.35), 0 6px 0 rgba(0,0,0,.6);
+  color: #AAB947;
+  text-shadow: 0 0 20px rgba(170,185,71,.65), 0 6px 0 rgba(0,0,0,.6);
 }
 .attract__date {
   margin: 16px 0 0;
@@ -494,8 +501,8 @@ body.no-marquee .coin__marquee-fallback { display: block; }
   margin: 0 0 14px;
   font-family: var(--font-px);
   font-size: clamp(20px, 4.4vw, 44px);
-  color: #fff;
-  text-shadow: 0 0 22px rgba(255,255,255,.3);
+  color: #AAB947;
+  text-shadow: 0 0 22px rgba(170,185,71,.55);
 }
 .menu__title:focus { outline: none; }
 

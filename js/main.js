@@ -116,6 +116,7 @@
     // every calendar client understands without shipping timezone definitions.
     // Kept to plain ASCII so older clients can't mangle the punctuation.
     const description = [
+      "It's a half day - office hours 9:00 AM-1:00 PM on the 25th.",
       '7:00 PM - The Green Pig Pub rooftop patio (private to us until 8:30 PM).',
       'Food and drinks covered by ITE. Each employee gets a +1.',
       '8:30-9:00 PM - Walk over to Quarters Arcade Bar.',

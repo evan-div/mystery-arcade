@@ -79,6 +79,7 @@ const CONFIG = {
 
   /* --- Perks (rendered as "power-ups") ------------------------------------ */
   PERKS: [
+    { icon: '🕐', title: 'HALF DAY',        detail: "It's a half day — office hours 9:00 AM–1:00 PM on the 25th." },
     { icon: '🍔', title: 'FOOD & DRINKS',   detail: 'Covered by ITE at the Green Pig.' },
     { icon: '👥', title: 'BRING A +1',      detail: 'Every employee gets one guest.' },
     { icon: '🪙', title: '2 ROLLS OF QUARTERS', detail: 'Per employee, to play with at Quarters.' },

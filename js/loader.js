@@ -8,9 +8,9 @@ const Loader = (() => {
 
   const LINES = [
     'ITE ARCADE SYSTEMS  v9.25.26',
-    'MEMORY CHECK ....... OK',
-    'ROOFTOP MODULE ..... OK',
-    'QUARTER DISPENSER .. OK',
+    'RENTMAN STATUS ..... OK',
+    'ROOFTOP MODULE ..... FIRE',
+    'TYSON DRINKING PROTOCOL .. OK',
     'GOOD TIMES ......... UNLIMITED',
     '',
     'LOADING PARTY.EXE',
