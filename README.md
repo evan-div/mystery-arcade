@@ -94,9 +94,9 @@ js/main.js          renders content from config and wires everything up
 ## Notes
 
 - **Sound defaults to on**, with a toggle in the top-right. The 8-bit effects are
-  synthesized from oscillators at runtime; `assets/hero-theme.mp3` loops for as long
-  as the attract screen is showing, and pauses the moment you leave it. Browsers block
-  audible autoplay before any interaction, so on first load it starts silently and
+  synthesized from oscillators at runtime; `assets/hero-theme.mp3` loops continuously
+  across every screen, muted only by the toggle. Browsers block audible autoplay
+  before any interaction, so on first load it starts silently and
   begins playing on the first click, key press, or tap anywhere on the page.
 - **The gimmick never blocks the information.** Screens are deep-linkable
   (`#details`, `#location`, `#rsvp`), the browser Back button works, `Esc` returns to

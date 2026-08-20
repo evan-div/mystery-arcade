@@ -58,7 +58,8 @@
   <p class="attract__hint"><span id="attractHint">▸ INSERT COIN</span></p>
   <button class="attract__skip" id="skipIntro">SKIP INTRO →</button>
 
-  <!-- Hero-screen music loop. Plays only while this screen is showing;
+  <!-- Background music loop, plays across every screen (display:none on this
+       section doesn't stop playback — the element just keeps running).
        js/music.js handles autoplay's user-gesture requirement. -->
   <audio id="heroMusic" src="assets/hero-theme.mp3" loop preload="auto" playsinline></audio>
 </section>

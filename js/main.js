@@ -302,10 +302,10 @@
     watchKonami(() => { Sound.powerUp(); Screens.set('snake'); });
 
     // Start / stop the game loop as the snake screen comes and goes.
+    // (Background music plays across every screen — see js/music.js.)
     Screens.onChange((now, prev) => {
       if (now === 'snake') SnakeGame.enter();
       else if (prev === 'snake') SnakeGame.leave();
-      Music.onScreenChange(now);
     });
 
     // Open on whatever the URL asked for, without pushing a duplicate entry.

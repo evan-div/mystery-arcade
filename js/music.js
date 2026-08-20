@@ -1,6 +1,6 @@
 /* =============================================================================
-   Hero-screen music loop (assets/hero-theme.mp3).
-   Plays only while the attract screen is showing, follows the sound toggle,
+   Background music loop (assets/hero-theme.mp3).
+   Plays continuously across every screen, gated only by the sound toggle,
    and defaults to on — but browsers block audible autoplay before any user
    gesture, so a blocked first attempt is armed to retry on the very first
    interaction anywhere on the page rather than waiting for the coin click.
@@ -11,7 +11,7 @@ const Music = (() => {
   let armed = false;
 
   function shouldPlay() {
-    return !!el && Sound.isEnabled() && Screens.get() === 'attract';
+    return !!el && Sound.isEnabled();
   }
 
   function tryPlay() {
@@ -48,15 +48,10 @@ const Music = (() => {
     tryPlay();
   }
 
-  function onScreenChange(now) {
-    if (now === 'attract') tryPlay();
-    else pause();
-  }
-
   function onSoundToggle(enabled) {
     if (enabled) tryPlay();
     else pause();
   }
 
-  return { init, onScreenChange, onSoundToggle, tryPlay };
+  return { init, onSoundToggle, tryPlay };
 })();
