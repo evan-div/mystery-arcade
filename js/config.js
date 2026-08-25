@@ -42,7 +42,7 @@ const CONFIG = {
     {
       id: 'green-pig',
       order: '1',
-      time: '7:00 PM',
+      time: '7:00 – 9:00 PM',
       name: 'The Green Pig Pub',
       sub: 'Rooftop Patio',
       address: '31 E 400 S, Salt Lake City, UT 84111',
@@ -56,7 +56,7 @@ const CONFIG = {
     {
       id: 'quarters',
       order: '2',
-      time: '8:30 – 9:00 PM',
+      time: '9:00 – 10:30 PM',
       name: 'Quarters Arcade Bar',
       sub: 'Short walk from the Pig',
       address: '5 E 400 S, Salt Lake City, UT 84111',
