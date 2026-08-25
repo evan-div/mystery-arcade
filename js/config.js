@@ -48,8 +48,7 @@ const CONFIG = {
       address: '31 E 400 S, Salt Lake City, UT 84111',
       accent: 'green',
       notes: [
-        'The rooftop is <strong>private to us until 8:30 PM</strong>.',
-        "After 8:30 it opens to the public — we can absolutely still hang up there, it just won't be ours alone.",
+        'The rooftop is <strong>private to us the whole time</strong>.',
         'Food and drinks are covered by ITE.',
       ],
     },
@@ -62,7 +61,7 @@ const CONFIG = {
       address: '5 E 400 S, Salt Lake City, UT 84111',
       accent: 'cyan',
       notes: [
-        'We walk over together between <strong>8:30 and 9:00 PM</strong>.',
+        'We walk over together around <strong>9:00 PM</strong>.',
         'Every employee gets <strong>two rolls of quarters</strong> to play with.',
         'Drinks are covered until <strong>10:30 PM</strong>.',
       ],
@@ -72,7 +71,6 @@ const CONFIG = {
   /* --- Timeline (rendered as an arcade high-score table) ------------------ */
   TIMELINE: [
     { time: '7:00 PM',  label: 'ARRIVE',        detail: 'Green Pig Pub rooftop patio' },
-    { time: '8:30 PM',  label: 'ROOFTOP OPENS', detail: 'Patio goes public — we can stay' },
     { time: '9:00 PM',  label: 'WALK OVER',     detail: 'Head to Quarters Arcade Bar' },
     { time: '10:30 PM', label: 'LAST CALL',     detail: 'ITE Tab closes at Quarters' },
   ],
