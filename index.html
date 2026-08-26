@@ -168,6 +168,67 @@
   </div>
 </section>
 
+<!-- ══════════════════════════════════════════════════════ GAME PICKER ═══ -->
+<section id="screen-arcade" class="screen screen--page" aria-label="Choose a game">
+  <div class="monitor monitor--page">
+    <div class="monitor__inner">
+      <h2 class="page__title" tabindex="-1">SELECT GAME</h2>
+      <p class="picker__lead">You found the back room. Pick your cabinet.</p>
+
+      <div class="picker">
+        <button class="picker__card picker__card--cyan" data-goto="runner">
+          <span class="picker__art" aria-hidden="true">🏃</span>
+          <span class="picker__name">QUARTER RUN</span>
+          <span class="picker__desc">Dodge the construction on 400 South.
+            Jump, double-jump, slide.</span>
+        </button>
+        <button class="picker__card picker__card--magenta" data-goto="snake">
+          <span class="picker__art" aria-hidden="true">🐍</span>
+          <span class="picker__name">QUARTER SNAKE</span>
+          <span class="picker__desc">Collect the quarters. Mind the walls.</span>
+        </button>
+      </div>
+
+      <button class="btn-back" data-goto="menu">◀ BACK TO MENU</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ RUNNER ═══ -->
+<section id="screen-runner" class="screen screen--game" aria-label="Quarter Run mini-game">
+  <div class="monitor monitor--game">
+    <div class="monitor__inner">
+      <div class="snake__hud">
+        <span>DIST <b id="runDist">0</b>m</span>
+        <span>25¢ <b id="runCoins">0</b></span>
+        <span>BEST <b id="runBest">0</b>m</span>
+      </div>
+
+      <div class="runner__wrap">
+        <canvas id="runCanvas" width="1280" height="560"
+                aria-label="Quarter Run game board"></canvas>
+        <div class="snake__overlay" id="runOverlay">
+          <p class="snake__big" id="runBig">QUARTER RUN</p>
+          <p class="snake__msg" id="runMsg">Jump the cones, slide the beams.</p>
+          <button class="btn btn--cyan" id="runStart">START</button>
+        </div>
+      </div>
+
+      <div class="runctl" aria-label="Game controls">
+        <button class="runctl__btn runctl__jump" id="runJump" aria-label="Jump">
+          <span aria-hidden="true">▲</span><em>JUMP</em>
+        </button>
+        <button class="runctl__btn runctl__slide" id="runSlide" aria-label="Slide">
+          <span aria-hidden="true">▼</span><em>SLIDE</em>
+        </button>
+      </div>
+      <p class="runctl__hint">Tap JUMP again in mid-air to double jump · hold SLIDE to stay down</p>
+
+      <button class="btn-back" data-goto="arcade">◀ BACK</button>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════════════════════════════════════════════════ SNAKE ═══ -->
 <section id="screen-snake" class="screen screen--snake" aria-label="Quarter Snake mini-game">
   <div class="monitor monitor--game">
@@ -194,7 +255,7 @@
         <button class="dpad__btn dpad__down"  data-dir="down"  aria-label="Down">▼</button>
       </div>
 
-      <button class="btn-back" data-goto="menu">◀ BACK TO MENU</button>
+      <button class="btn-back" data-goto="arcade">◀ BACK</button>
     </div>
   </div>
 </section>
@@ -245,6 +306,7 @@
 <script src="js/music.js"></script>
 <script src="js/loader.js"></script>
 <script src="js/snake.js"></script>
+<script src="js/runner.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

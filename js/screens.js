@@ -4,10 +4,12 @@
    ========================================================================== */
 
 const Screens = (() => {
-  const ALL = ['attract', 'boot', 'menu', 'location', 'details', 'rsvp', 'snake'];
+  const ALL = ['attract', 'boot', 'menu', 'location', 'details', 'rsvp',
+               'arcade', 'runner', 'snake'];
 
   // Screens you can deep-link to. 'boot' is a transition, never a destination.
-  const ROUTABLE = ['menu', 'location', 'details', 'rsvp', 'snake'];
+  const ROUTABLE = ['menu', 'location', 'details', 'rsvp',
+                    'arcade', 'runner', 'snake'];
 
   let current = null;
   const listeners = [];

@@ -181,7 +181,8 @@
                  'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
     let pos = 0;
     document.addEventListener('keydown', (e) => {
-      if (Screens.get() === 'snake') return;   // arrows drive the game there
+      const scr = Screens.get();
+      if (scr === 'snake' || scr === 'runner') return;  // arrows drive the games there
       const want = SEQ[pos];
       const got = e.key.length === 1 ? e.key.toLowerCase() : e.key;
       if (got === want) {
@@ -231,10 +232,11 @@
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
       const s = Screens.get();
-      if (s === 'location' || s === 'details' || s === 'rsvp' || s === 'snake') {
-        Sound.back();
-        Screens.set('menu');
-      }
+      // Games step back to the picker; everything else back to the menu.
+      const to = (s === 'runner' || s === 'snake') ? 'arcade'
+               : ['location', 'details', 'rsvp', 'arcade'].includes(s) ? 'menu'
+               : null;
+      if (to) { Sound.back(); Screens.set(to); }
     });
   }
 
@@ -268,6 +270,19 @@
       status: $('#bootStatus'),
     });
 
+    RunnerGame.init({
+      canvas:   $('#runCanvas'),
+      overlay:  $('#runOverlay'),
+      big:      $('#runBig'),
+      msg:      $('#runMsg'),
+      startBtn: $('#runStart'),
+      dist:     $('#runDist'),
+      coins:    $('#runCoins'),
+      best:     $('#runBest'),
+      jumpBtn:  $('#runJump'),
+      slideBtn: $('#runSlide'),
+    });
+
     SnakeGame.init({
       canvas:   $('#snakeCanvas'),
       overlay:  $('#snakeOverlay'),
@@ -297,15 +312,17 @@
 
     $('#secretBtn').addEventListener('click', () => {
       Sound.powerUp();
-      Screens.set('snake');
+      Screens.set('arcade');
     });
-    watchKonami(() => { Sound.powerUp(); Screens.set('snake'); });
+    watchKonami(() => { Sound.powerUp(); Screens.set('arcade'); });
 
     // Start / stop the game loop as the snake screen comes and goes.
     // (Background music plays across every screen — see js/music.js.)
     Screens.onChange((now, prev) => {
       if (now === 'snake') SnakeGame.enter();
       else if (prev === 'snake') SnakeGame.leave();
+      if (now === 'runner') RunnerGame.enter();
+      else if (prev === 'runner') RunnerGame.leave();
     });
 
     // Open on whatever the URL asked for, without pushing a duplicate entry.

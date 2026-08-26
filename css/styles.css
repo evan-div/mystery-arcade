@@ -73,6 +73,8 @@ body.screen-menu     #screen-menu     { display: grid; }
 body.screen-location #screen-location { display: grid; }
 body.screen-details  #screen-details  { display: grid; }
 body.screen-rsvp     #screen-rsvp     { display: grid; }
+body.screen-arcade   #screen-arcade   { display: grid; }
+body.screen-runner   #screen-runner   { display: grid; }
 body.screen-snake    #screen-snake    { display: grid; }
 
 /* Nothing renders until JS has decided the starting screen. */
@@ -380,7 +382,7 @@ body.no-marquee .coin__marquee-fallback { display: block; }
 
 /* ══════════════════════════════════════════════════ THE CRT MONITOR ═══ */
 
-.screen--boot, .screen--menu, .screen--page, .screen--snake {
+.screen--boot, .screen--menu, .screen--page, .screen--snake, .screen--game {
   place-items: center;
   padding: clamp(10px, 3vw, 34px);
   background:
@@ -887,4 +889,106 @@ body.no-marquee .coin__marquee-fallback { display: block; }
   .attract__hint  { bottom: 54px; }
   .attract__skip  { bottom: 14px; }
   .monitor__inner { max-height: 84vh; }
+}
+
+/* ═══════════════════════════════════════════════════════ GAME PICKER ═══ */
+
+.picker__lead {
+  margin: 0 0 clamp(20px, 3vw, 28px);
+  text-align: center; font-size: 15px; color: var(--ink-dim);
+}
+
+.picker { display: grid; gap: clamp(12px, 2vw, 18px); }
+
+.picker__card {
+  display: grid;
+  grid-template-columns: 3em 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 16px; row-gap: 5px;
+  align-items: center;
+  padding: clamp(16px, 2.6vw, 22px);
+  border: 2px solid rgba(255,255,255,.12);
+  border-left: 4px solid var(--pick, var(--cyan));
+  border-radius: 6px;
+  background: rgba(255,255,255,.025);
+  text-align: left;
+  transition: border-color .18s, background .18s, transform .18s;
+}
+.picker__card--cyan    { --pick: var(--cyan); }
+.picker__card--magenta { --pick: var(--magenta); }
+
+.picker__card:hover, .picker__card:focus-visible {
+  border-color: var(--pick);
+  background: rgba(255,255,255,.06);
+  transform: translateX(4px);
+}
+
+.picker__art  { grid-row: 1 / 3; font-size: 30px; text-align: center; }
+.picker__name {
+  font-family: var(--font-px); font-size: clamp(11px, 1.6vw, 14px);
+  letter-spacing: .08em; color: var(--pick);
+  text-shadow: 0 0 12px currentColor;
+}
+.picker__desc { font-size: 13.5px; line-height: 1.5; color: var(--ink-dim); }
+
+/* ══════════════════════════════════════════════════════════ RUNNER ═══ */
+
+.runner__wrap {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  aspect-ratio: 640 / 280;
+}
+
+#runCanvas {
+  width: 100%; height: 100%;
+  display: block;
+  border: 2px solid rgba(53,230,255,.4);
+  border-radius: 6px;
+  background: #04070c;
+  box-shadow: inset 0 0 50px rgba(53,230,255,.07);
+  touch-action: none;
+}
+
+/* Two big touch targets — the whole point of this game over Snake on mobile. */
+.runctl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px auto 0;
+  max-width: 420px;
+}
+
+.runctl__btn {
+  display: grid; place-items: center; gap: 2px;
+  padding: 16px 10px;
+  border: 2px solid var(--rc, var(--cyan));
+  border-radius: 8px;
+  background: rgba(53,230,255,.07);
+  color: var(--rc, var(--cyan));
+  font-size: 20px; line-height: 1;
+  touch-action: manipulation;      /* kills the mobile double-tap-to-zoom delay */
+  user-select: none; -webkit-user-select: none;
+  transition: background .1s, transform .1s;
+}
+.runctl__btn em {
+  font-style: normal; font-family: var(--font-px);
+  font-size: 9px; letter-spacing: .1em;
+}
+.runctl__btn:active { background: rgba(53,230,255,.28); transform: scale(.97); }
+.runctl__jump  { --rc: var(--green); background: rgba(77,255,124,.07); }
+.runctl__jump:active  { background: rgba(77,255,124,.28); }
+.runctl__slide { --rc: var(--amber); background: rgba(255,176,0,.07); }
+.runctl__slide:active { background: rgba(255,176,0,.28); }
+
+.runctl__hint {
+  margin: 12px 0 0; text-align: center;
+  font-size: 12px; color: var(--ink-dim); line-height: 1.5;
+}
+
+@media (max-width: 560px) {
+  .runctl { max-width: none; }
+  .runctl__btn { padding: 20px 10px; font-size: 22px; }
+  .runctl__hint { font-size: 11px; }
+  .picker__card { grid-template-columns: 2.4em 1fr; }
 }
