@@ -205,23 +205,28 @@
       </div>
 
       <div class="runner__wrap">
-        <canvas id="runCanvas" width="1280" height="560"
-                aria-label="Quarter Run game board"></canvas>
-        <div class="snake__overlay" id="runOverlay">
-          <p class="snake__big" id="runBig">QUARTER RUN</p>
-          <p class="snake__msg" id="runMsg">Jump the cones, slide the beams.</p>
-          <button class="btn btn--cyan" id="runStart">START</button>
+        <div class="runner__screen">
+          <canvas id="runCanvas" width="1280" height="560"
+                  aria-label="Quarter Run game board"></canvas>
+          <div class="snake__overlay" id="runOverlay">
+            <p class="snake__big" id="runBig">QUARTER RUN</p>
+            <p class="snake__msg" id="runMsg">Jump the cones, slide the beams.</p>
+            <button class="btn btn--cyan" id="runStart">START</button>
+          </div>
+        </div>
+
+        <!-- Sits below the screen normally; overlays the bottom corners on a
+             landscape phone so the playfield can use the full height. -->
+        <div class="runctl" aria-label="Game controls">
+          <button class="runctl__btn runctl__jump" id="runJump" aria-label="Jump">
+            <span aria-hidden="true">▲</span><em>JUMP</em>
+          </button>
+          <button class="runctl__btn runctl__slide" id="runSlide" aria-label="Slide">
+            <span aria-hidden="true">▼</span><em>SLIDE</em>
+          </button>
         </div>
       </div>
 
-      <div class="runctl" aria-label="Game controls">
-        <button class="runctl__btn runctl__jump" id="runJump" aria-label="Jump">
-          <span aria-hidden="true">▲</span><em>JUMP</em>
-        </button>
-        <button class="runctl__btn runctl__slide" id="runSlide" aria-label="Slide">
-          <span aria-hidden="true">▼</span><em>SLIDE</em>
-        </button>
-      </div>
       <p class="runctl__hint">Tap JUMP again in mid-air to double jump · hold SLIDE to stay down</p>
 
       <button class="btn-back" data-goto="arcade">◀ BACK</button>

@@ -10,10 +10,8 @@
 
 const RunnerGame = (() => {
 
-  /* ── Design-space constants (canvas is 640×280 logical units) ─────────── */
-  const W = 640, H = 280;
-  const GROUND_Y   = 226;        // y of the ground surface
-  const PLAYER_X   = 88;         // player never moves horizontally
+  /* ── Fixed geometry ───────────────────────────────────────────────────
+     Vertical layout and physics never change; only the camera width does. */
   const P_W        = 20;
   const P_H        = 36;         // standing height
   const P_SLIDE_H  = 18;         // sliding height
@@ -22,16 +20,51 @@ const RunnerGame = (() => {
   const JUMP_V     = 570;        // px/s  → apex ≈ 62px, below the 70px tower
   const MAX_JUMPS  = 2;
 
-  const START_SPEED = 250;       // px/s
-  const MAX_SPEED   = 560;       // px/s — capped so it stays survivable
-  const SPEED_PER_M = 0.26;      // reaches max at ≈1190m
-  const PX_PER_M    = 20;
-
   /* Fairness helpers players never notice but always feel. */
   const COYOTE_TIME  = 0.10;     // jump still works just after leaving ground
   const JUMP_BUFFER  = 0.12;     // jump pressed just before landing still fires
   const MIN_SLIDE    = 0.42;     // a quick tap still gives a usable slide
   const HITBOX_INSET = 3;        // forgiving collisions
+
+  /* ── Camera ───────────────────────────────────────────────────────────
+     On phones the canvas is only ~330px wide, which made everything tiny.
+     Scaling the whole world uniformly would NOT help: at a fixed display
+     width that leaves objects exactly the same apparent size. The only way
+     to draw them bigger is to show less world horizontally — which costs
+     look-ahead. So we shrink the camera AND scale speed by the same factor,
+     which keeps look-ahead TIME (and therefore the difficulty) identical
+     while making everything ~1.5× larger on screen. */
+  const REF_W = 640, REF_PX = 88;                 // desktop reference camera
+  let W, H, GROUND_Y, PLAYER_X, K;
+  let START_SPEED, MAX_SPEED, SPEED_PER_M, PX_PER_M;
+
+  function isPortraitPhone() {
+    return window.matchMedia('(max-width: 700px) and (orientation: portrait)').matches;
+  }
+
+  function configureViewport() {
+    /* Landscape is the right shape for a side-scroller, so a rotated phone
+       gets the full desktop camera. Portrait still plays, using a tighter
+       camera so the sprites stay legible on a ~330px-wide canvas. */
+    const landscapePhone = window.matchMedia(
+      '(orientation: landscape) and (max-height: 560px)').matches;
+    if (isPortraitPhone())    { W = 430; H = 300; PLAYER_X = 64;  }
+    else if (landscapePhone)  { W = 760; H = 300; PLAYER_X = 96;  }
+    else                      { W = REF_W; H = 280; PLAYER_X = REF_PX; }
+    GROUND_Y = H - 54;
+
+    // Visible runway ahead of the player, relative to the desktop camera.
+    K = (W - PLAYER_X - P_W) / (REF_W - REF_PX - P_W);
+
+    START_SPEED = 250 * K;
+    MAX_SPEED   = 680 * K;
+    SPEED_PER_M = 0.26 * K;
+    PX_PER_M    = 20 * K;        // scaled too, so metres still tick at the same rate
+
+    cv.width = W * 2; cv.height = H * 2;
+    cv.style.aspectRatio = W + ' / ' + H;
+    ctx.setTransform(2, 0, 0, 2, 0, 0);
+  }
 
   const STORAGE_KEY = 'ite-arcade-run-best';
 
@@ -51,14 +84,17 @@ const RunnerGame = (() => {
     { m:  200, text: 'YOU MADE IT — QUARTERS, 9:00 PM' },
     { m:  350, text: 'TWO ROLLS OF QUARTERS' },
     { m:  500, text: 'DRINKS TIL 10:30' },
-    { m:  750, text: 'STILL GOING?' },
+    { m:  750, text: 'STILL GOING? IT GETS WORSE' },
     { m: 1000, text: 'ARCADE LEGEND' },
+    { m: 1500, text: 'SHOW OFF' },
+    { m: 2000, text: 'GO OUTSIDE' },
+    { m: 3000, text: 'OK YOU WIN' },
   ];
 
   /* ── State ────────────────────────────────────────────────────────────── */
   let cv, ctx, els = {};
   let obstacles, coins, player, speed, meters, coinCount, best;
-  let alive, started, spawnIn, obstaclesSpawned, milestoneIdx;
+  let alive, started, spawnIn, obstaclesSpawned, milestoneIdx, clusterLeft;
   let banner, bannerT, runPhase, scroll;
   let raf = null, last = 0, acc = 0;
   let jumpBufferT = 0, coyoteT = 0, slideHeldT = 0, slideHeld = false;
@@ -77,9 +113,10 @@ const RunnerGame = (() => {
     coinCount = 0;
     alive = true;
     started = false;
-    spawnIn = 260;                 // first obstacle gets a generous runway
+    spawnIn = 260 * K;             // first obstacle gets a generous runway
     obstaclesSpawned = 0;
     milestoneIdx = 0;
+    clusterLeft = 0;
     banner = null; bannerT = 0;
     runPhase = 0; scroll = 0;
     jumpBufferT = 0; coyoteT = 0; slideHeldT = 0; slideHeld = false;
@@ -98,10 +135,27 @@ const RunnerGame = (() => {
     // Open with cones so the first thing anyone meets is a plain single jump.
     if (obstaclesSpawned < 2) return 'cone';
     if (obstaclesSpawned < 4) return Math.random() < 0.5 ? 'cone' : 'beam';
+    if (clusterLeft > 0) return 'cone';               // clusters are jump-only
+    const d = diff();
+    const coneShare = 0.40 - 0.10 * d;                // fewer easy ones later
     const r = Math.random();
-    if (r < 0.40) return 'cone';
-    if (r < 0.70) return 'tower';
+    if (r < coneShare) return 'cone';
+    if (r < coneShare + 0.30 + 0.05 * d) return 'tower';
     return 'beam';
+  }
+
+  /* Difficulty. Because gaps are measured in TIME, raising speed alone barely
+     changes the challenge — the real lever is gap time, so that is what
+     tightens. Past 750m ("STILL GOING?") clusters start appearing too. */
+  function diff()     { return Math.min(meters / 1000, 1); }
+  function latePress(){ return Math.min(Math.max(0, (meters - 750) / 1250), 1); }
+
+  function nextGapTime() {
+    const d = diff(), l = latePress();
+    const lo     = 1.02 - 0.22 * d - 0.14 * l;          // 1.02s → 0.66s
+    const spread = Math.max(0.12, 0.62 - 0.30 * d - 0.10 * l);
+    // Floor stays above one full jump airtime (0.44s) plus reaction time.
+    return Math.max(0.62, lo + Math.random() * spread);
   }
 
   function spawnObstacle() {
@@ -114,12 +168,28 @@ const RunnerGame = (() => {
     /* Gap measured in TIME, then converted to distance at the current speed.
        This is the whole fairness mechanism: faster speed ⇒ proportionally
        wider pixel gap, so reaction time never shrinks below what's clearable. */
-    const gapTime = 0.86 + Math.random() * 0.62;      // 0.86s – 1.48s
+    let gapTime = nextGapTime();
+
+    /* Clusters: a burst of cones at tighter-than-normal spacing. Only cones,
+       and only after 750m. They are always visible before the first one
+       lands, so reacting to them is anticipation rather than a blind guess —
+       and the run gets a longer breather immediately afterwards. */
+    if (clusterLeft > 0) {
+      clusterLeft--;
+      gapTime = 0.56 + Math.random() * 0.10;
+      if (clusterLeft === 0) gapTime += 0.38;          // recovery gap
+    } else if (meters > 750 && Math.random() < Math.min(0.55, (meters - 750) / 3000)) {
+      // Bursts get longer as well as more frequent, so the ceiling keeps
+      // rising past 2000m instead of flattening into another cruise.
+      clusterLeft = 1 + ((Math.random() * (meters > 2000 ? 3 : 2)) | 0);
+      gapTime = 0.56 + Math.random() * 0.10;
+    }
+
     const gapPx = speed * gapTime;
     spawnIn = gapPx;
 
     // Drop a quarter arc into the middle of the upcoming gap.
-    if (Math.random() < 0.5) spawnCoinArc(W + 20 + gapPx * 0.5);
+    if (clusterLeft === 0 && Math.random() < 0.5) spawnCoinArc(W + 20 + gapPx * 0.5);
   }
 
   function spawnCoinArc(cx) {
@@ -466,9 +536,11 @@ const RunnerGame = (() => {
   }
 
   function enter() {
+    configureViewport();      // picks up rotation / resize between sessions
     reset();
     draw();
     showOverlay('QUARTER RUN',
+      (isPortraitPhone() ? '↻ Turn your phone sideways for a bigger view. ' : '') +
       'Green Pig to Quarters, down 400 South. Jump the cones, double-jump the towers, slide under the beams.',
       'START');
     play();
@@ -481,10 +553,7 @@ const RunnerGame = (() => {
     cv = els.canvas;
     ctx = cv.getContext('2d');
 
-    // Render at 2× for crisp edges, then work in logical units everywhere else.
-    cv.width = W * 2; cv.height = H * 2;
-    ctx.scale(2, 2);
-
+    configureViewport();      // sets canvas size and the 2× render transform
     reset();
 
     els.startBtn.addEventListener('click', () => { Sound.select(); begin(); });
@@ -521,6 +590,23 @@ const RunnerGame = (() => {
       if (document.hidden) stop();
       else if (Screens.get() === 'runner') play();
     });
+
+    /* Rotating changes the camera, and obstacle positions are stored in the
+       old scale, so the safe move is to reconfigure and start fresh. */
+    const onRotate = () => {
+      if (Screens.get() !== 'runner') return;
+      const wasRunning = started;
+      configureViewport();
+      reset();
+      draw();
+      showOverlay(wasRunning ? 'ROTATED' : 'QUARTER RUN',
+        wasRunning ? 'Screen changed shape, so that run ended. Tap START to go again.'
+                   : (isPortraitPhone() ? '↻ Turn your phone sideways for a bigger view. ' : '') +
+                     'Jump the cones, double-jump the towers, slide under the beams.',
+        wasRunning ? 'RUN AGAIN' : 'START');
+      play();
+    };
+    window.matchMedia('(orientation: portrait)').addEventListener('change', onRotate);
   }
 
   return { init, enter, leave };
